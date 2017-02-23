@@ -1,6 +1,8 @@
 package arrayList;
 
-public class MyArrayList {
+import java.util.Iterator;
+
+public class MyArrayList implements MyCollection<Object> {
 	//
 	private Object[] array;
 	private Object[] newArray;
@@ -34,7 +36,7 @@ public class MyArrayList {
 		//
 		Object prevData = array[index];
 		if (index < 0 || index > size) {
-			throw new IndexOutOfBoundsException("현재 index : " + index);
+			throw new IndexOutOfBoundsException("now index : " + index);
 		}
 		array[index - 1] = null;
 		for (int i = index; i < size; i++) {
@@ -122,6 +124,32 @@ public class MyArrayList {
 			}
 		}
 		return str;
+	}
+
+	@Override
+	public boolean addAll(MyCollection<? extends Object> c) {
+		//
+		int sizeForAdd = c.size();
+		if (capacity - size <= sizeForAdd) {
+			resize();
+		}
+		for (int i = 0; i < sizeForAdd; i++) {
+			array[size++] = c.get(i);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean removeAll(MyCollection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterator<Object> iterator() {
+		//
+		
+		return null;
 	}
 
 }
