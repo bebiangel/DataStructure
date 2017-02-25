@@ -54,10 +54,10 @@ public class MyArrayList implements MyCollection<Object> {
 		if (index < 0 || index > size) {
 			throw new IndexOutOfBoundsException("now index : " + index);
 		}
-		array[index - 1] = null;
-		for (int i = index; i < size; i++) {
+		for (int i = index + 1; i < size - 1; i++) {
 			array[i - 1] = array[i];
 		}
+		array[size] = null;
 		size--;
 
 		return prevData;

@@ -14,10 +14,10 @@ public class Watch {
 		//
 		this.endTime = System.nanoTime();
 	}
-	
+
 	public void totalTime() {
 		//
 		stop();
-		System.out.println(endTime - startTime);
+		System.out.println(endTime - startTime + "ms");
 	}
 }
