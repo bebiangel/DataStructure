@@ -1,14 +1,12 @@
 package arrayList;
 
-import java.util.Iterator;
-
 public class MyArrayList implements MyCollection<Object> {
 	//
 	private Object[] array;
 	private Object[] newArray;
 	private int size;
 	private int capacity;
-	private int initialCapacity = 5;
+	private int initialCapacity = 10;
 
 	public MyArrayList() {
 		//
@@ -16,6 +14,7 @@ public class MyArrayList implements MyCollection<Object> {
 		this.capacity = initialCapacity;
 	}
 
+	@Override
 	public boolean add(Object data) {
 		//
 		if (size >= capacity) {
@@ -26,12 +25,29 @@ public class MyArrayList implements MyCollection<Object> {
 		return true;
 	}
 
+	@Override
 	public void add(Object data, int index) {
 		//
+		if (index > size || index < 0)
+			throw new IndexOutOfBoundsException("now size : " + size + ", you want : " + index);
 		this.array[index] = data;
 		size++;
 	}
 
+	@Override
+	public boolean addAll(MyCollection<? extends Object> c) {
+		//
+		int sizeForAdd = c.size();
+		if (capacity - size <= sizeForAdd) {
+			resize();
+		}
+		for (int i = 0; i < sizeForAdd; i++) {
+			array[size++] = c.get(i);
+		}
+		return true;
+	}
+
+	@Override
 	public Object remove(int index) {
 		//
 		Object prevData = array[index];
@@ -47,16 +63,43 @@ public class MyArrayList implements MyCollection<Object> {
 		return prevData;
 	}
 
+	@Override
+	public boolean removeAll(MyCollection<?> c) {
+		//
+		this.newArray = new Object[this.initialCapacity];
+		int sizeReCount = 0;
+		int newArrayIndex = 0;
+		for (int i = 0; i < size; i++) {
+			boolean result = false;
+			for (int j = 0; j < c.size(); j++) {
+				if (array[i] == c.get(j)) {
+					result = true;
+				}
+			}
+			if (result == true) {
+				newArray[newArrayIndex] = array[i];
+				newArrayIndex++;
+				sizeReCount++;
+			}
+		}
+		this.array = newArray;
+		this.size = sizeReCount;
+		return true;
+	}
+
+	@Override
 	public boolean isEmpty() {
 		//
 		return size == 0;
 	}
 
+	@Override
 	public int size() {
 		//
 		return size;
 	}
 
+	@Override
 	public void clear() {
 		//
 		this.newArray = new Object[this.initialCapacity];
@@ -65,6 +108,7 @@ public class MyArrayList implements MyCollection<Object> {
 		this.capacity = initialCapacity;
 	}
 
+	@Override
 	public Object get(int index) {
 		//
 		if (index < 0 || index > size) {
@@ -73,6 +117,7 @@ public class MyArrayList implements MyCollection<Object> {
 		return array[index];
 	}
 
+	@Override
 	public int indecxOf(Object object) {
 		//
 		for (int i = 0; i < size; i++) {
@@ -83,6 +128,7 @@ public class MyArrayList implements MyCollection<Object> {
 		return -1;
 	}
 
+	@Override
 	public Object set(int index, Object object) {
 		//
 		if (index < 0 || index > size) {
@@ -94,6 +140,7 @@ public class MyArrayList implements MyCollection<Object> {
 		return temp;
 	}
 
+	@Override
 	public boolean contains(Object object) {
 		//
 		for (int i = 0; i < size; i++) {
@@ -104,7 +151,7 @@ public class MyArrayList implements MyCollection<Object> {
 		return false;
 	}
 
-	public void resize() {
+	private void resize() {
 		//
 		this.newArray = new Object[capacity * 2];
 		for (int i = 0; i < size; i++) {
@@ -125,31 +172,4 @@ public class MyArrayList implements MyCollection<Object> {
 		}
 		return str;
 	}
-
-	@Override
-	public boolean addAll(MyCollection<? extends Object> c) {
-		//
-		int sizeForAdd = c.size();
-		if (capacity - size <= sizeForAdd) {
-			resize();
-		}
-		for (int i = 0; i < sizeForAdd; i++) {
-			array[size++] = c.get(i);
-		}
-		return true;
-	}
-
-	@Override
-	public boolean removeAll(MyCollection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Iterator<Object> iterator() {
-		//
-		
-		return null;
-	}
-
 }
