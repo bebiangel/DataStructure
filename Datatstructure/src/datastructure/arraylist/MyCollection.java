@@ -1,4 +1,4 @@
-package arrayList;
+package datastructure.arraylist;
 
 public interface MyCollection<E> {
 	//

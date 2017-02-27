@@ -1,4 +1,6 @@
-package arrayList;
+package datastructure.arraylist;
+
+import datastructure.arraylist.MyCollection;
 
 public class MyArrayList implements MyCollection<Object> {
 	//
