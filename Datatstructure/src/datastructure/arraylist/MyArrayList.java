@@ -1,4 +1,4 @@
-package arrayList;
+package datastructure.arraylist;
 
 import datastructure.arraylist.MyCollection;
 
@@ -30,9 +30,8 @@ public class MyArrayList implements MyCollection<Object> {
 	@Override
 	public void add(Object data, int index) {
 		//
-		if (index > size || index < 0) {
+		if (index > size || index < 0)
 			throw new IndexOutOfBoundsException("now size : " + size + ", you want : " + index);
-		}
 		this.array[index] = data;
 		size++;
 	}
@@ -57,9 +56,8 @@ public class MyArrayList implements MyCollection<Object> {
 		if (index < 0 || index > size) {
 			throw new IndexOutOfBoundsException("now index : " + index);
 		}
-		array[index] = null;
-		for (int i = index; i < size; i++) {
-			array[i] = array[i + 1];
+		for (int i = index + 1; i < size - 1; i++) {
+			array[i - 1] = array[i];
 		}
 		array[size] = null;
 		size--;
