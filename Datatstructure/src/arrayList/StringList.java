@@ -24,7 +24,10 @@ public class StringList implements MyStringList {
 	@Override
 	public boolean isEmpty() {
 		//
-		return false;
+		if (length != 0) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -57,7 +60,7 @@ public class StringList implements MyStringList {
 		if (index < 0 || index > length) {
 			throw new ArrayIndexOutOfBoundsException();
 		}
-		
+
 		return elements[index];
 	}
 
@@ -69,7 +72,10 @@ public class StringList implements MyStringList {
 
 	@Override
 	public void remove(int index) {
-		// TODO Auto-generated method stub
+		//
+		if (index > length || index < 0) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
 
 	}
 
@@ -94,6 +100,14 @@ public class StringList implements MyStringList {
 	}
 
 	private void increaseCapacity() {
+
+	}
+
+	private void shiftLeftFrom(int position) {
+
+	}
+
+	private void shiftRightFrom(int position) {
 
 	}
 }
