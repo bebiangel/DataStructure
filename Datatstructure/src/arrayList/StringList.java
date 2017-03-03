@@ -1,6 +1,8 @@
 package arrayList;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 public class StringList implements MyStringList {
 	//
@@ -32,26 +34,49 @@ public class StringList implements MyStringList {
 
 	@Override
 	public boolean contains(String o) {
-		// TODO Auto-generated method stub
-		return false;
+		//
+		boolean result = false;
+		
+		for (int i = 0; i < length; i++) {
+			if (o.equals(elements[i])) {
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public Iterator<String> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		//
+		List<String> list = Arrays.asList(Arrays.copyOf(elements, length));
+	
+		return list.iterator();
 	}
 
 	@Override
 	public boolean add(String e) {
-		// TODO Auto-generated method stub
-		return false;
+		//
+		if (capacity <= length) {
+			increaseCapacity();
+		}
+		elements[length] = e;
+		length++;
+
+		return true;
 	}
 
 	@Override
 	public boolean add(int index, String e) {
-		// TODO Auto-generated method stub
-		return false;
+		//
+		if (index < 0 || index > length) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+		shiftRightFrom(index);
+		elements[index] = e;
+		length++;
+
+		return true;
 	}
 
 	@Override
@@ -66,8 +91,19 @@ public class StringList implements MyStringList {
 
 	@Override
 	public void remove(Object o) {
-		// TODO Auto-generated method stub
-
+		//
+		int index = -1;
+		for (int i = 0; i < length; i++) {
+			if (o.equals(elements[i])) {
+				index = i;
+				elements[i] = null;
+				break;
+			}
+		}
+		if (index > -1) {
+			shiftLeftFrom(index);
+			length--;
+		}
 	}
 
 	@Override
@@ -76,13 +112,24 @@ public class StringList implements MyStringList {
 		if (index > length || index < 0) {
 			throw new ArrayIndexOutOfBoundsException();
 		}
-
+		elements[index] = null;
+		shiftLeftFrom(index);
+		length--;
 	}
 
 	@Override
 	public void addAll(MyStringList c) {
-		// TODO Auto-generated method stub
-
+		//
+		if (c.size() > capacity - length) {
+			increaseCapacity();
+		}
+		for (int i = 0; i < c.size(); i++) {
+			if (c.size() > 10) {
+				increaseCapacity();
+			}
+			elements[length] = c.get(i);
+			length++;
+		}
 	}
 
 	@Override
@@ -95,19 +142,41 @@ public class StringList implements MyStringList {
 
 	@Override
 	public String[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
+		//
+		return Arrays.copyOf(elements, length);
 	}
 
 	private void increaseCapacity() {
-
+		//
+		this.capacity += 10;
+		this.newElements = new String[capacity];
+		System.arraycopy(elements, 0, newElements, 0, this.length);
+		this.elements = newElements;
 	}
 
 	private void shiftLeftFrom(int position) {
-
+		//
+		for (int i = position; i < length; i++) {
+			elements[i] = elements[i + 1];
+		}
 	}
 
 	private void shiftRightFrom(int position) {
+		//
+		for (int i = length; i > position; i--) {
+			elements[i] = elements[i - 1];
+		}
+	}
 
+	public String toString() {
+		//
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < length; i++) {
+			builder.append(elements[i]);
+			if (i < length - 1) {
+				builder.append(", ");
+			}
+		}
+		return builder.toString();
 	}
 }
