@@ -1,4 +1,4 @@
-package arrayList;
+package datastructure.arraylist;
 
 import java.util.Iterator;
 
@@ -6,7 +6,7 @@ public class Api {
 	//
 	public static void main(String[] args) {
 		//
-		StringList stringList = new StringList();
+		MyArrayList stringList = new MyArrayList();
 		stringList.add("b");
 		stringList.add("c");
 		stringList.add("d");
@@ -14,7 +14,7 @@ public class Api {
 		stringList.add("e");
 		stringList.add("e");
 		stringList.add("e");
-		StringList addList = new StringList();
+		MyArrayList addList = new MyArrayList();
 		addList.add("a");
 	
 		stringList.addAll(addList);

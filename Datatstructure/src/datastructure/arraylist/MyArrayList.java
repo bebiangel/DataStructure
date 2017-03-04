@@ -1,177 +1,204 @@
 package datastructure.arraylist;
 
-import datastructure.arraylist.MyCollection;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
-public class MyArrayList implements MyCollection<Object> {
+public class MyArrayList implements MyStringList {
 	//
-	private Object[] array;
-	private Object[] newArray;
-	private int size;
+	private static final int INITIAL_CAPACITY = 10;
+	private int length;
 	private int capacity;
-	private int initialCapacity = 10;
+	private String[] elements;
+	private String[] newElements;
 
 	public MyArrayList() {
 		//
-		this.array = new Object[initialCapacity];
-		this.capacity = initialCapacity;
-	}
-
-	@Override
-	public boolean add(Object data) {
-		//
-		if (size >= capacity) {
-			resize();
-		}
-		this.array[size] = data;
-		size++;
-		return true;
-	}
-
-	@Override
-	public void add(Object data, int index) {
-		//
-		if (index > size || index < 0)
-			throw new IndexOutOfBoundsException("now size : " + size + ", you want : " + index);
-		this.array[index] = data;
-		size++;
-	}
-
-	@Override
-	public boolean addAll(MyCollection<? extends Object> c) {
-		//
-		int sizeForAdd = c.size();
-		if (capacity - size <= sizeForAdd) {
-			resize();
-		}
-		for (int i = 0; i < sizeForAdd; i++) {
-			array[size++] = c.get(i);
-		}
-		return true;
-	}
-
-	@Override
-	public Object remove(int index) {
-		//
-		Object prevData = array[index];
-		if (index < 0 || index > size) {
-			throw new IndexOutOfBoundsException("now index : " + index);
-		}
-		for (int i = index + 1; i < size - 1; i++) {
-			array[i - 1] = array[i];
-		}
-		array[size] = null;
-		size--;
-
-		return prevData;
-	}
-
-	@Override
-	public boolean removeAll(MyCollection<?> c) {
-		//
-		this.newArray = new Object[this.initialCapacity];
-		int sizeReCount = 0;
-		int newArrayIndex = 0;
-		for (int i = 0; i < size; i++) {
-			boolean result = false;
-			for (int j = 0; j < c.size(); j++) {
-				if (array[i] == c.get(j)) {
-					result = true;
-				}
-			}
-			if (result == true) {
-				newArray[newArrayIndex] = array[i];
-				newArrayIndex++;
-				sizeReCount++;
-			}
-		}
-		this.array = newArray;
-		this.size = sizeReCount;
-		return true;
-	}
-
-	@Override
-	public boolean isEmpty() {
-		//
-		return size == 0;
+		clear();
 	}
 
 	@Override
 	public int size() {
 		//
-		return size;
+		return length;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		//
+		if (length != 0) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean contains(String o) {
+		//
+		boolean result = false;
+
+		for (int i = 0; i < length; i++) {
+			if (o.equals(elements[i])) {
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public Iterator<String> iterator() {
+		//
+		List<String> list = Arrays.asList(Arrays.copyOf(elements, length));
+
+		return list.iterator();
+	}
+
+	@Override
+	public boolean add(String e) {
+		//
+		if (capacity <= length) {
+			increaseCapacity();
+		}
+		
+		elements[length] = e;
+		length++;
+
+		return true;
+	}
+
+	@Override
+	public boolean add(int index, String e) {
+		//
+		if (index < 0 || index > length) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+		
+		if(length == capacity) {
+			increaseCapacity();
+		}
+		
+		shiftRightFrom(index);
+		elements[index] = e;
+		length++;
+
+		return true;
+	}
+
+	@Override
+	public String get(int index) {
+		//
+		if (index < 0 || index > length) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+
+		return elements[index];
+	}
+
+	@Override
+	public void remove(Object o) {
+		//
+		int index = -1;
+		for (int i = 0; i < length; i++) {
+			if (o.equals(elements[i])) {
+				index = i;
+				elements[i] = null;
+				break;
+			}
+		}
+		if (index > -1) {
+			shiftLeftFrom(index);
+			length--;
+		}
+	}
+
+	@Override
+	public void remove(int index) {
+		//
+		if (index > length || index < 0) {
+			throw new ArrayIndexOutOfBoundsException();
+		}
+		elements[index] = null;
+		shiftLeftFrom(index);
+		length--;
+	}
+
+	@Override
+	public void addAll(MyStringList c) {
+		//
+		if (c.size() > (capacity - length)) {
+			increaseCapacity();
+		}
+		for (int i = 0; i < c.size(); i++) {
+			if (c.size() + length > capacity) {
+				increaseCapacity(c.size());
+			} else {
+				increaseCapacity();
+			}
+			elements[length] = c.get(i);
+			length++;
+		}
 	}
 
 	@Override
 	public void clear() {
 		//
-		this.newArray = new Object[this.initialCapacity];
-		this.array = newArray;
-		this.size = 0;
-		this.capacity = initialCapacity;
+		this.length = 0;
+		this.capacity = INITIAL_CAPACITY;
+		this.elements = new String[INITIAL_CAPACITY];
 	}
 
 	@Override
-	public Object get(int index) {
+	public String[] toArray() {
 		//
-		if (index < 0 || index > size) {
-			throw new IndexOutOfBoundsException("index : " + index);
-		}
-		return array[index];
+		return Arrays.copyOf(elements, length);
 	}
 
-	@Override
-	public int indecxOf(Object object) {
+	private void increaseCapacity(int targetLength) {
 		//
-		for (int i = 0; i < size; i++) {
-			if (object.equals(array[i])) {
-				return i;
-			}
+		while(true){
+			if(capacity > targetLength) {
+				break;
+			} 
+			capacity += INITIAL_CAPACITY;
 		}
-		return -1;
+		
+		this.newElements = new String[capacity];
+		System.arraycopy(elements, 0, newElements, 0, this.length);
+		this.elements = newElements;
 	}
 
-	@Override
-	public Object set(int index, Object object) {
+	private void increaseCapacity() {
 		//
-		if (index < 0 || index > size) {
-			throw new IndexOutOfBoundsException("index : " + index);
-		}
-		Object temp = array[index];
-		this.array[index] = object;
-
-		return temp;
+		this.capacity += INITIAL_CAPACITY;
+		this.newElements = new String[capacity];
+		System.arraycopy(elements, 0, newElements, 0, this.length);
+		this.elements = newElements;
 	}
 
-	@Override
-	public boolean contains(Object object) {
+	private void shiftLeftFrom(int position) {
 		//
-		for (int i = 0; i < size; i++) {
-			if (object.equals(array[i])) {
-				return true;
-			}
+		for (int i = position; i < length; i++) {
+			elements[i] = elements[i + 1];
 		}
-		return false;
 	}
 
-	private void resize() {
+	private void shiftRightFrom(int position) {
 		//
-		this.newArray = new Object[capacity * 2];
-		for (int i = 0; i < size; i++) {
-			this.newArray[i] = this.array[i];
+		for (int i = length; i > position; i--) {
+			elements[i] = elements[i - 1];
 		}
-		this.array = newArray;
-		this.capacity *= 2;
 	}
 
 	public String toString() {
 		//
-		String str = "";
-		for (int i = 0; i < size; i++) {
-			str += array[i];
-			if (i < size - 1) {
-				str += ", ";
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < length; i++) {
+			builder.append(elements[i]);
+			if (i < length - 1) {
+				builder.append(", ");
 			}
 		}
-		return str;
+		return builder.toString();
 	}
 }
