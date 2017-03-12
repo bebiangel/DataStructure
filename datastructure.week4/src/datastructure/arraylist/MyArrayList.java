@@ -2,7 +2,9 @@ package datastructure.arraylist;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
+import java.util.NoSuchElementException;
+
+import datastructure.iterator.MyIterator;
 
 public class MyArrayList implements MyStringList {
 	//
@@ -38,6 +40,7 @@ public class MyArrayList implements MyStringList {
 		boolean result = false;
 
 		for (int i = 0; i < length; i++) {
+			//
 			if (o.equals(elements[i])) {
 				result = true;
 				break;
@@ -47,11 +50,10 @@ public class MyArrayList implements MyStringList {
 	}
 
 	@Override
-	public Iterator<String> iterator() {
+	public MyIterator iterator() {
 		//
-		List<String> list = Arrays.asList(Arrays.copyOf(elements, length));
-
-		return list.iterator();
+		//return new MyIterator(Arrays.asList(Arrays.copyOf(elements, length)));
+		return new MyIterator(Arrays.copyOf(elements, length));
 	}
 
 	@Override
@@ -99,13 +101,16 @@ public class MyArrayList implements MyStringList {
 	public void remove(Object o) {
 		//
 		int index = -1;
+		
 		for (int i = 0; i < length; i++) {
 			if (o.equals(elements[i])) {
+				//
 				index = i;
 				elements[i] = null;
 				break;
 			}
 		}
+		
 		if (index > -1) {
 			shiftLeftFrom(index);
 			length--;
@@ -118,6 +123,7 @@ public class MyArrayList implements MyStringList {
 		if (index > length || index < 0) {
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		
 		elements[index] = null;
 		shiftLeftFrom(index);
 		length--;
@@ -126,16 +132,17 @@ public class MyArrayList implements MyStringList {
 	@Override
 	public void addAll(MyStringList c) {
 		//
-		int addSize = c.size();
-		if ((addSize + length) > capacity) {
-			if (addSize > 10) {
-				increaseCapacity(addSize + 10);
+		if (c.size() > (capacity - length)) {
+			increaseCapacity();
+		}
+		for (int i = 0; i < c.size(); i++) {
+			//
+			if (c.size() + length > capacity) {
+				increaseCapacity(c.size());
 			} else {
 				increaseCapacity();
 			}
-		}
-		
-		for (int i = 0; i < addSize; i++) {
+			
 			elements[length] = c.get(i);
 			length++;
 		}
@@ -157,13 +164,13 @@ public class MyArrayList implements MyStringList {
 
 	private void increaseCapacity(int targetLength) {
 		//
-		while (true) {
-			if (capacity > targetLength) {
+		while(true){
+			if(capacity > targetLength) {
 				break;
-			}
+			} 
 			capacity += INITIAL_CAPACITY;
 		}
-
+		
 		this.newElements = new String[capacity];
 		System.arraycopy(elements, 0, newElements, 0, this.length);
 		this.elements = newElements;
@@ -201,5 +208,32 @@ public class MyArrayList implements MyStringList {
 			}
 		}
 		return builder.toString();
+	}
+
+	private class Iter implements Iterator<String> {
+		//
+		int cursor;
+
+		@Override
+		public boolean hasNext() {
+			//
+			boolean result = true;
+			if (cursor + 1 == length) {
+				return false;
+			}
+			System.out.println("cursor : " + cursor);
+			cursor++;
+			return result;
+		}
+
+		@Override
+		public String next() {
+			//
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			return elements[cursor];
+		}
+
 	}
 }
