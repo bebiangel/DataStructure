@@ -7,7 +7,11 @@ public class Api {
 		MyStringLinkedList list = new MyStringLinkedList();
 		list.add("a");
 		list.add("b");
-		
+		list.add("c");
+	
+		list.remove(1);
 		System.out.println(list);
+		
+		
 	}
 }
