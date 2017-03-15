@@ -183,7 +183,7 @@ public class MyStringLinkedList implements StringLinkedList {
 	private void addFirst(String element) {
 		//
 		Node newNode = new Node(element);
-		newNode.next = head;
+		
 		head = newNode;
 		size++;
 		if (tail == null) {
@@ -194,7 +194,7 @@ public class MyStringLinkedList implements StringLinkedList {
 	private void addLast(String element) {
 		//
 		Node newNode = new Node(element);
-		newNode.setNext(newNode);
+		newNode.next = tail;
 		tail = newNode;
 		size++;
 	}
