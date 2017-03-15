@@ -10,9 +10,7 @@ public class MyStringLinkedList implements StringLinkedList {
 
 	public MyStringLinkedList() {
 		//
-		this.head = null;
-		this.tail = null;
-		this.size = 0;
+		clear();
 	}
 
 	private class Node {
@@ -37,7 +35,17 @@ public class MyStringLinkedList implements StringLinkedList {
 		public String getElement() {
 			return element;
 		}
-		
+
+		public String toString() {
+			//
+			StringBuilder builder = new StringBuilder();
+
+			builder.append("element:").append(element);
+			builder.append(", nextElement:").append((getNext() == null) ? "null" : getNext().getElement());
+
+			return builder.toString();
+		}
+
 	}
 
 	@Override
@@ -60,14 +68,20 @@ public class MyStringLinkedList implements StringLinkedList {
 	@Override
 	public boolean contains(String o) {
 		//
-		boolean result = true;
-		while (head != null) {
+		boolean result = false;
+		Node node = head;
+
+		while (node.next != null) {
 			//
-
+			System.out.println(head.getElement());
+			if (o.equals(node.getElement())) {
+				result = true;
+				break;
+			}
+			node = node.getNext();
 		}
-		//
 
-		return false;
+		return result;
 	}
 
 	@Override
@@ -95,14 +109,14 @@ public class MyStringLinkedList implements StringLinkedList {
 		if (index > size || index < 0) {
 			throw new IndexOutOfBoundsException();
 		}
-	
+
 		if (size == 0) {
 			addFirst(e);
 		} else {
 			//
-			
+
 		}
-		
+
 		return true;
 	}
 
@@ -118,32 +132,46 @@ public class MyStringLinkedList implements StringLinkedList {
 			//
 			node = head.next;
 		}
-		
+
 		return node.element;
 	}
 
 	@Override
 	public void remove(Object o) {
-		// TODO Auto-generated method stub
+		//
 
 	}
 
 	@Override
 	public void remove(int index) {
 		//
+		Node node = head;
+		for (int i = 0; i < index - 1; i++) {
+			//
+			node = node.getNext();
+		}
+
+		Node prevNode = node;
+		Node nextNode = node.getNext();
 
 	}
 
 	@Override
 	public void addAll(StringLinkedList c) {
-		// TODO Auto-generated method stub
-
+		//
+		int addedSize = c.size();
+		for (int i = 0; i < addedSize; i++) {
+			//
+			addLast(c.get(i));
+		}
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		//
+		this.head = null;
+		this.tail = null;
+		this.size = 0;
 	}
 
 	@Override
@@ -155,7 +183,7 @@ public class MyStringLinkedList implements StringLinkedList {
 	private void addFirst(String element) {
 		//
 		Node newNode = new Node(element);
-		newNode.setNext(newNode);
+		newNode.next = head;
 		head = newNode;
 		size++;
 		if (tail == null) {
@@ -174,11 +202,12 @@ public class MyStringLinkedList implements StringLinkedList {
 	public String toString() {
 		//
 		StringBuilder builder = new StringBuilder();
-		builder.append(head.element);
+		builder.append("head : " + head);
 		builder.append(", ");
-		builder.append(tail.element);
-		builder.append("\n");
+		builder.append("tail : " + tail);
+		builder.append(", ");
 		builder.append("size : " + size);
+
 		return builder.toString();
 	}
 
