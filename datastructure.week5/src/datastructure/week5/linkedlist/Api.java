@@ -10,7 +10,6 @@ public class Api {
 		list.add("c");
 		
 		System.out.println(list.contains("b"));
-		System.out.println(list.contains("b"));
 		System.out.println(list);
 		
 		

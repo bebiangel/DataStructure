@@ -60,17 +60,17 @@ public class MyStringLinkedList implements StringLinkedList {
 	public boolean contains(String o) {
 		//
 		boolean result = false;
-		Node currentNode = head.next;
+		Node node = head;
 
-		while (currentNode.next != null) {
+		while (node.next != null) {
 			//
-			System.out.println(currentNode.next);
-			if (o.equals(currentNode.getElement())) {
+			System.out.println(node.next);
+			if (o.equals(node.getElement())) {
 				System.out.println("===========");
 				result = true;
 				break;
 			}
-			currentNode = currentNode.getNext();
+			node = node.next;
 		}
 
 		return result;
@@ -103,12 +103,13 @@ public class MyStringLinkedList implements StringLinkedList {
 			throw new IndexOutOfBoundsException();
 		}
 
-		if(index == 0) { 
+		if (size == 0) {
 			addFirst(e);
 		} else {
-			
+			//
+
 		}
-		
+
 		return true;
 	}
 
@@ -175,9 +176,8 @@ public class MyStringLinkedList implements StringLinkedList {
 	private void addFirst(String element) {
 		//
 		Node newNode = new Node(element);
-		newNode.next = head;
-		head = newNode;
 		
+		head = newNode;
 		size++;
 		if (tail == null) {
 			tail = newNode;
