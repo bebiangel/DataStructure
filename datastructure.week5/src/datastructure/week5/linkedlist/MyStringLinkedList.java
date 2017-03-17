@@ -24,14 +24,6 @@ public class MyStringLinkedList implements StringLinkedList {
 			this.next = null;
 		}
 
-		public Node getNext() {
-			return next;
-		}
-
-		public String getElement() {
-			return element;
-		}
-
 		public String toString() {
 			//
 			return String.valueOf(this.element);
@@ -60,17 +52,15 @@ public class MyStringLinkedList implements StringLinkedList {
 	public boolean contains(String o) {
 		//
 		boolean result = false;
-		Node node = head;
+		Node currentNode = head;
 
-		while (node.next != null) {
+		while (currentNode.next != null) {
 			//
-			System.out.println(node.next);
-			if (o.equals(node.getElement())) {
-				System.out.println("===========");
+			if (o.equals(currentNode.element)) {
 				result = true;
 				break;
 			}
-			node = node.next;
+			currentNode = currentNode.next;
 		}
 
 		return result;
@@ -78,7 +68,7 @@ public class MyStringLinkedList implements StringLinkedList {
 
 	@Override
 	public Iterator<String> iterator() {
-		// TODO Auto-generated method stub
+		//
 		return null;
 	}
 
@@ -89,7 +79,6 @@ public class MyStringLinkedList implements StringLinkedList {
 			//
 			addFirst(e);
 		} else {
-			System.out.println("마지막에 add");
 			addLast(e);
 		}
 
@@ -107,6 +96,12 @@ public class MyStringLinkedList implements StringLinkedList {
 			addFirst(e);
 		} else {
 			//
+			Node newNode = new Node(e);
+			Node previousNode = getNode(index - 1);
+			newNode.next = previousNode.next;
+			previousNode.next = newNode;
+
+			size++;
 
 		}
 
@@ -120,33 +115,49 @@ public class MyStringLinkedList implements StringLinkedList {
 			throw new IndexOutOfBoundsException();
 		}
 
-		Node node = head;
+		Node currentNode = head;
 		for (int i = 0; i < index; i++) {
 			//
-			node = head.next;
+			currentNode = currentNode.next;
 		}
 
-		return node.element;
+		return currentNode.element;
 	}
 
 	@Override
 	public void remove(Object o) {
 		//
+		int index = -1;
 
+		Node currentNode = head;
+		for (int i = 0; i < size; i++) {
+			//
+			if (o.equals(currentNode.element)) {
+				//
+				index = i;
+				break;
+			}
+			currentNode = currentNode.next;
+		}
+
+		if (index > -1) {
+			remove(index);
+			size--;
+		}
 	}
 
 	@Override
 	public void remove(int index) {
 		//
-		Node node = head;
-		for (int i = 0; i < index - 1; i++) {
-			//
-			node = node.getNext();
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException();
 		}
 
-		Node prevNode = node;
-		Node nextNode = node.getNext();
-
+		Node previousNode = getNode(index - 1);
+		Node currentNode = getNode(index);
+		previousNode.next = currentNode.next;
+		currentNode = null;
+		size--;
 	}
 
 	@Override
@@ -173,48 +184,54 @@ public class MyStringLinkedList implements StringLinkedList {
 		return null;
 	}
 
+	private Node getNode(int index) {
+		//
+		Node currentNode = head;
+		for (int i = 0; i < index; i++) {
+			//
+			currentNode = currentNode.next;
+		}
+
+		return currentNode;
+	}
+
 	private void addFirst(String element) {
 		//
 		Node newNode = new Node(element);
-		
+		newNode.next = head;
 		head = newNode;
 		size++;
-		if (tail == null) {
+
+		if (head.next == null) {
 			tail = newNode;
 		}
-		System.out.println(size);
 	}
 
 	private void addLast(String element) {
 		//
 		Node newNode = new Node(element);
-		if(size == 1 ) { 
-			head.next = newNode;
-			tail = newNode;
-		} else {
-			newNode.next = tail;
-			tail = newNode;
-		}
+		tail.next = newNode;
+		tail = newNode;
 		size++;
 	}
 
 	public String toString() {
 		// 노드가 없다면 []를 리턴합니다.
-	    if(head == null){
-	        return "[]";
-	    }       
-	    // 탐색을 시작합니다.
-	    Node temp = head;
-	    String str = "[";
-	    // 다음 노드가 없을 때까지 반복문을 실행합니다.
-	    // 마지막 노드는 다음 노드가 없기 때문에 아래의 구문은 마지막 노드는 제외됩니다.
-	    while(temp.next != null){
-	        str += temp.element + ",";
-	        temp = temp.next;
-	    }
-	    // 마지막 노드를 출력결과에 포함시킵니다.
-	    str += temp.element;
-	    return str+"]";
+		if (head == null) {
+			return "[]";
+		}
+		// 탐색을 시작합니다.
+		Node temp = head;
+		String str = "[";
+		// 다음 노드가 없을 때까지 반복문을 실행합니다.
+		// 마지막 노드는 다음 노드가 없기 때문에 아래의 구문은 마지막 노드는 제외됩니다.
+		while (temp.next != null) {
+			str += temp.element + ",";
+			temp = temp.next;
+		}
+		// 마지막 노드를 출력결과에 포함시킵니다.
+		str += temp.element;
+		return str + "]";
 	}
 
 }
