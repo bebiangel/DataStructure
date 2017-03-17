@@ -28,22 +28,13 @@ public class MyStringLinkedList implements StringLinkedList {
 			return next;
 		}
 
-		public void setNext(Node input) {
-			this.next = input;
-		}
-
 		public String getElement() {
 			return element;
 		}
 
 		public String toString() {
 			//
-			StringBuilder builder = new StringBuilder();
-
-			builder.append("element:").append(element);
-			builder.append(", nextElement:").append((getNext() == null) ? "null" : getNext().getElement());
-
-			return builder.toString();
+			return String.valueOf(this.element);
 		}
 
 	}
@@ -69,16 +60,17 @@ public class MyStringLinkedList implements StringLinkedList {
 	public boolean contains(String o) {
 		//
 		boolean result = false;
-		Node node = head;
+		Node currentNode = head.next;
 
-		while (node.next != null) {
+		while (currentNode.next != null) {
 			//
-			System.out.println(head.getElement());
-			if (o.equals(node.getElement())) {
+			System.out.println(currentNode.next);
+			if (o.equals(currentNode.getElement())) {
+				System.out.println("===========");
 				result = true;
 				break;
 			}
-			node = node.getNext();
+			currentNode = currentNode.getNext();
 		}
 
 		return result;
@@ -97,6 +89,7 @@ public class MyStringLinkedList implements StringLinkedList {
 			//
 			addFirst(e);
 		} else {
+			System.out.println("마지막에 add");
 			addLast(e);
 		}
 
@@ -110,13 +103,12 @@ public class MyStringLinkedList implements StringLinkedList {
 			throw new IndexOutOfBoundsException();
 		}
 
-		if (size == 0) {
+		if(index == 0) { 
 			addFirst(e);
 		} else {
-			//
-
+			
 		}
-
+		
 		return true;
 	}
 
@@ -183,32 +175,46 @@ public class MyStringLinkedList implements StringLinkedList {
 	private void addFirst(String element) {
 		//
 		Node newNode = new Node(element);
-		
+		newNode.next = head;
 		head = newNode;
+		
 		size++;
 		if (tail == null) {
 			tail = newNode;
 		}
+		System.out.println(size);
 	}
 
 	private void addLast(String element) {
 		//
 		Node newNode = new Node(element);
-		newNode.next = tail;
-		tail = newNode;
+		if(size == 1 ) { 
+			head.next = newNode;
+			tail = newNode;
+		} else {
+			newNode.next = tail;
+			tail = newNode;
+		}
 		size++;
 	}
 
 	public String toString() {
-		//
-		StringBuilder builder = new StringBuilder();
-		builder.append("head : " + head);
-		builder.append(", ");
-		builder.append("tail : " + tail);
-		builder.append(", ");
-		builder.append("size : " + size);
-
-		return builder.toString();
+		// 노드가 없다면 []를 리턴합니다.
+	    if(head == null){
+	        return "[]";
+	    }       
+	    // 탐색을 시작합니다.
+	    Node temp = head;
+	    String str = "[";
+	    // 다음 노드가 없을 때까지 반복문을 실행합니다.
+	    // 마지막 노드는 다음 노드가 없기 때문에 아래의 구문은 마지막 노드는 제외됩니다.
+	    while(temp.next != null){
+	        str += temp.element + ",";
+	        temp = temp.next;
+	    }
+	    // 마지막 노드를 출력결과에 포함시킵니다.
+	    str += temp.element;
+	    return str+"]";
 	}
 
 }
