@@ -79,6 +79,7 @@ public class MyStringLinkedList implements StringLinkedList {
 			//
 			addFirst(e);
 		} else {
+			//
 			addLast(e);
 		}
 
@@ -92,19 +93,16 @@ public class MyStringLinkedList implements StringLinkedList {
 			throw new IndexOutOfBoundsException();
 		}
 
-		if (size == 0) {
-			addFirst(e);
-		} else {
-			//
-			Node newNode = new Node(e);
-			Node previousNode = getNode(index - 1);
-			newNode.next = previousNode.next;
-			previousNode.next = newNode;
-
-			size++;
-
+		Node newNode = new Node(e);
+		Node currentNode = head;
+		for(int i = 0; i < index; i ++) { 
+			currentNode = head.next;
 		}
-
+		newNode.next = currentNode.next;
+		currentNode.next = newNode;
+		
+		size++;
+		
 		return true;
 	}
 
@@ -137,6 +135,7 @@ public class MyStringLinkedList implements StringLinkedList {
 				index = i;
 				break;
 			}
+			
 			currentNode = currentNode.next;
 		}
 
@@ -180,19 +179,30 @@ public class MyStringLinkedList implements StringLinkedList {
 
 	@Override
 	public String[] toArray() {
-		// TODO Auto-generated method stub
+		//
 		return null;
 	}
 
 	private Node getNode(int index) {
 		//
-		Node currentNode = head;
+		Node targetNode = head;
 		for (int i = 0; i < index; i++) {
 			//
-			currentNode = currentNode.next;
+			targetNode = targetNode.next;
 		}
 
-		return currentNode;
+		int position = 0;
+		while(true) {
+			//
+			position++;
+			if(position == index) {
+				break;
+			}
+			
+			targetNode = targetNode.next;
+		}
+
+		return targetNode;
 	}
 
 	private void addFirst(String element) {
@@ -213,25 +223,6 @@ public class MyStringLinkedList implements StringLinkedList {
 		tail.next = newNode;
 		tail = newNode;
 		size++;
-	}
-
-	public String toString() {
-		// 노드가 없다면 []를 리턴합니다.
-		if (head == null) {
-			return "[]";
-		}
-		// 탐색을 시작합니다.
-		Node temp = head;
-		String str = "[";
-		// 다음 노드가 없을 때까지 반복문을 실행합니다.
-		// 마지막 노드는 다음 노드가 없기 때문에 아래의 구문은 마지막 노드는 제외됩니다.
-		while (temp.next != null) {
-			str += temp.element + ",";
-			temp = temp.next;
-		}
-		// 마지막 노드를 출력결과에 포함시킵니다.
-		str += temp.element;
-		return str + "]";
 	}
 
 }
