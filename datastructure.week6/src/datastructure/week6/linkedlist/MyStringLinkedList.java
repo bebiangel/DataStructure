@@ -1,4 +1,4 @@
-package datastructure.week5.linkedlist;
+package datastructure.week6.linkedlist;
 
 import java.util.Iterator;
 
@@ -6,42 +6,24 @@ public class MyStringLinkedList implements StringLinkedList {
 	//
 	private Node head;
 	private Node tail;
-	private int size;
+	private int length;
 
 	public MyStringLinkedList() {
 		//
 		clear();
 	}
 
-	private class Node {
-		//
-		private String element;
-		private Node next;
-
-		public Node(String element) {
-			//
-			this.element = element;
-			this.next = null;
-		}
-
-		public String toString() {
-			//
-			return String.valueOf(this.element);
-		}
-
-	}
-
 	@Override
 	public int size() {
 		//
-		return size;
+		return length;
 	}
 
 	@Override
 	public boolean isEmpty() {
 		//
 		boolean result = true;
-		if (size == 0) {
+		if (length == 0) {
 			result = false;
 		}
 
@@ -69,14 +51,14 @@ public class MyStringLinkedList implements StringLinkedList {
 	@Override
 	public Iterator<String> iterator() {
 		//
-		
+
 		return null;
 	}
 
 	@Override
 	public boolean add(String e) {
 		//
-		if (size == 0) {
+		if (length == 0) {
 			//
 			addFirst(e);
 		} else {
@@ -90,7 +72,7 @@ public class MyStringLinkedList implements StringLinkedList {
 	@Override
 	public boolean add(int index, String e) {
 		//
-		if (index > size || index < 0) {
+		if (index > length || index < 0) {
 			throw new IndexOutOfBoundsException();
 		}
 
@@ -102,7 +84,7 @@ public class MyStringLinkedList implements StringLinkedList {
 		newNode.next = currentNode.next;
 		currentNode.next = newNode;
 
-		size++;
+		length++;
 
 		return true;
 	}
@@ -110,7 +92,7 @@ public class MyStringLinkedList implements StringLinkedList {
 	@Override
 	public String get(int index) {
 		//
-		if (index < 0 || index > size) {
+		if (index < 0 || index > length) {
 			throw new IndexOutOfBoundsException();
 		}
 
@@ -129,7 +111,7 @@ public class MyStringLinkedList implements StringLinkedList {
 		int index = -1;
 
 		Node currentNode = head;
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < length; i++) {
 			//
 			if (o.equals(currentNode.element)) {
 				//
@@ -142,18 +124,18 @@ public class MyStringLinkedList implements StringLinkedList {
 
 		if (index > -1) {
 			remove(index);
-			size--;
+			length--;
 		}
 	}
 
 	@Override
 	public void remove(int index) {
 		//
-		if (index < 0 || index > size) {
+		if (index < 0 || index > length) {
 			throw new IndexOutOfBoundsException();
 		}
-		
-		if(index == 0) {
+
+		if (index == 0) {
 			removeFirst();
 		} else {
 			//
@@ -161,9 +143,9 @@ public class MyStringLinkedList implements StringLinkedList {
 			Node removeNode = getNode(index);
 			previousNode.next = removeNode.next;
 			removeNode = null;
-			size--;
+			length--;
 		}
-		
+
 	}
 
 	@Override
@@ -181,7 +163,7 @@ public class MyStringLinkedList implements StringLinkedList {
 		//
 		this.head = null;
 		this.tail = null;
-		this.size = 0;
+		this.length = 0;
 	}
 
 	@Override
@@ -193,19 +175,14 @@ public class MyStringLinkedList implements StringLinkedList {
 	private Node getNode(int index) {
 		//
 		Node targetNode = head;
-		for (int i = 0; i < index; i++) {
-			//
-			targetNode = targetNode.next;
-		}
-
 		int position = 0;
+
 		while (true) {
 			//
-			position++;
 			if (position == index) {
 				break;
 			}
-
+			position++;
 			targetNode = targetNode.next;
 		}
 
@@ -217,7 +194,7 @@ public class MyStringLinkedList implements StringLinkedList {
 		Node node = head;
 		head = node.next;
 		node = null;
-		size--;
+		length--;
 	}
 
 	private void addFirst(String element) {
@@ -225,7 +202,7 @@ public class MyStringLinkedList implements StringLinkedList {
 		Node newNode = new Node(element);
 		newNode.next = head;
 		head = newNode;
-		size++;
+		length++;
 
 		if (head.next == null) {
 			tail = newNode;
@@ -237,7 +214,40 @@ public class MyStringLinkedList implements StringLinkedList {
 		Node newNode = new Node(element);
 		tail.next = newNode;
 		tail = newNode;
-		size++;
+		length++;
 	}
 
+	public String toString() {
+		// 
+		if (head == null) {
+			return "[]";
+		}
+
+		Node temp = head;
+		String str = "[";
+		while (temp.next != null) {
+			str += temp.element + ",";
+			temp = temp.next;
+		}
+		str += temp.element;
+		return str + "]";
+	}
+
+	private class Node {
+		//
+		private String element;
+		private Node next;
+
+		public Node(String element) {
+			//
+			this.element = element;
+			this.next = null;
+		}
+
+		public String toString() {
+			//
+			return String.valueOf(this.element);
+		}
+
+	}
 }
