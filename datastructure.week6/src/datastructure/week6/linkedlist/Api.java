@@ -1,5 +1,7 @@
 package datastructure.week6.linkedlist;
 
+import datastructure.week6.iterator.MyIterator;
+
 public class Api {
 	//
 	public static void main(String[] args) {
@@ -14,7 +16,10 @@ public class Api {
 		list.add("7");
 		list.add("8");
 		list.add(4, "a");
-		System.out.println(list);
+		MyIterator iterator = list.iterator();
+		while(iterator.hasNext()) {
+			System.out.println(iterator.next());
+		}
 		
 		list.remove("4");
 		System.out.println(list);

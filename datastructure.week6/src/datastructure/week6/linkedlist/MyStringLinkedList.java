@@ -1,6 +1,6 @@
 package datastructure.week6.linkedlist;
 
-import java.util.Iterator;
+import datastructure.week6.iterator.MyIterator;
 
 public class MyStringLinkedList implements StringLinkedList {
 	//
@@ -49,10 +49,10 @@ public class MyStringLinkedList implements StringLinkedList {
 	}
 
 	@Override
-	public Iterator<String> iterator() {
+	public MyIterator iterator() {
 		//
-
-		return null;
+		String[] elements = toArray();
+		return new MyIterator(elements);
 	}
 
 	@Override
@@ -169,7 +169,17 @@ public class MyStringLinkedList implements StringLinkedList {
 	@Override
 	public String[] toArray() {
 		//
-		return null;
+		String[] elements = new String[length];
+		int index = 0;
+		Node node = head;
+		while(node != null){
+			//
+			elements[index] = node.element;
+			node = node.next;
+			index++;
+		}
+		
+		return elements;
 	}
 
 	private Node getNode(int index) {

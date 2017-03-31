@@ -1,13 +1,13 @@
 package datastructure.week6.linkedlist;
 
-import java.util.Iterator;
+import datastructure.week6.iterator.MyIterator;
 
 public interface StringLinkedList {
 	 //
 	 int size();
 	 boolean isEmpty();
 	 boolean contains(String o);
-	 Iterator<String> iterator();
+	 MyIterator iterator();
 	 boolean add(String e);
 	 boolean add(int index, String e); 
 	 String get(int index); 
