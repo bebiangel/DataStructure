@@ -22,30 +22,30 @@ public class MyStringLinkedList implements StringLinkedList {
 	@Override
 	public boolean isEmpty() {
 		//
-		boolean result = true;
 		if (length == 0) {
-			result = false;
+			return true;
 		}
 
-		return result;
+		return false;
 	}
 
 	@Override
 	public boolean contains(String o) {
 		//
-		boolean result = false;
+		boolean contained = false;
 		Node currentNode = head;
 
 		while (currentNode.next != null) {
 			//
 			if (o.equals(currentNode.element)) {
-				result = true;
+				contained = true;
 				break;
 			}
+			
 			currentNode = currentNode.next;
 		}
 
-		return result;
+		return contained;
 	}
 
 	@Override
@@ -101,6 +101,7 @@ public class MyStringLinkedList implements StringLinkedList {
 
 		Node targetNode = head;
 		int position = 0;
+		
 		while(true) {
 			//
 			if(index == position) {
@@ -116,20 +117,18 @@ public class MyStringLinkedList implements StringLinkedList {
 	@Override
 	public void remove(Object o) {
 		//
-		int index = -1;
+		int index = 0;
 
 		Node currentNode = head;
-		for (int i = 0; i < length; i++) {
+		while(currentNode != null){
 			//
-			if (o.equals(currentNode.element)) {
-				//
-				index = i;
-				break;
+			if(currentNode.equalsElement(o)) {
+				remove(index);
 			}
-
 			currentNode = currentNode.next;
+			index++;
 		}
-
+		
 		if (index > -1) {
 			remove(index);
 			length--;
@@ -146,10 +145,13 @@ public class MyStringLinkedList implements StringLinkedList {
 		if (index == 0) {
 			//
 			removeFirst();
+		} else if(index == length-1) {
+			//
+			removeLast();
 		} else {
 			//
-			Node previousNode = getNode(index - 1);
 			Node removeNode = getNode(index);
+			Node previousNode = getNode(index - 1);
 			
 			previousNode.next = removeNode.next;
 			removeNode = null;
@@ -163,9 +165,10 @@ public class MyStringLinkedList implements StringLinkedList {
 	public void addAll(StringLinkedList c) {
 		//
 		int addedSize = c.size();
+		
 		for (int i = 0; i < addedSize; i++) {
 			//
-			addLast(c.get(i));
+			add(c.get(i));
 		}
 	}
 
@@ -183,11 +186,11 @@ public class MyStringLinkedList implements StringLinkedList {
 		String[] elements = new String[length];
 		int index = 0;
 		Node node = head;
+
 		while (node != null) {
 			//
-			elements[index] = node.element;
+			elements[index++] = node.element;
 			node = node.next;
-			index++;
 		}
 
 		return elements;
@@ -219,6 +222,11 @@ public class MyStringLinkedList implements StringLinkedList {
 		length--;
 	}
 
+	private void removeLast() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void addFirst(String element) {
 		//
 		Node newNode = new Node(element);
@@ -239,22 +247,6 @@ public class MyStringLinkedList implements StringLinkedList {
 		length++;
 	}
 
-	public String toString() {
-		//
-		if (head == null) {
-			return "[]";
-		}
-
-		Node temp = head;
-		String str = "[";
-		while (temp.next != null) {
-			str += temp.element + ",";
-			temp = temp.next;
-		}
-		str += temp.element;
-		return str + "]";
-	}
-
 	private class Node {
 		//
 		private String element;
@@ -265,11 +257,14 @@ public class MyStringLinkedList implements StringLinkedList {
 			this.element = element;
 			this.next = null;
 		}
-
-		public String toString() {
+		
+		public boolean equalsElement(Object o) {
 			//
-			return String.valueOf(this.element);
+			if(this.element.equals(o)) {
+				return true;
+			}
+			
+			return false;
 		}
-
 	}
 }

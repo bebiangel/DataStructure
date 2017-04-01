@@ -10,6 +10,7 @@ public class MyIterator implements MyStringIterator {
 	public MyIterator(String[] elements) {
 		//
 		this.elements = elements;
+		this.cursor = 0;
 	}
 
 	@Override
