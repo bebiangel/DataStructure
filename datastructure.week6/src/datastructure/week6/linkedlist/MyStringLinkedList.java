@@ -70,21 +70,24 @@ public class MyStringLinkedList implements StringLinkedList {
 	}
 
 	@Override
-	public boolean add(int index, String e) {
+	public boolean add(int index, String element) {
 		//
 		if (index > length || index < 0) {
 			throw new IndexOutOfBoundsException();
 		}
+		if (index == 0) {
+			//
+			addFirst(element);
+		} else {
+			//
+			Node newNode = new Node(element);
+			Node currentNode = getNode(index - 1);
 
-		Node newNode = new Node(e);
-		Node currentNode = head;
-		for (int i = 0; i < index; i++) {
-			currentNode = head.next;
+			newNode.next = currentNode.next;
+			currentNode.next = newNode;
+
+			length++;
 		}
-		newNode.next = currentNode.next;
-		currentNode.next = newNode;
-
-		length++;
 
 		return true;
 	}
@@ -96,13 +99,18 @@ public class MyStringLinkedList implements StringLinkedList {
 			throw new IndexOutOfBoundsException();
 		}
 
-		Node currentNode = head;
-		for (int i = 0; i < index; i++) {
+		Node targetNode = head;
+		int position = 0;
+		while(true) {
 			//
-			currentNode = currentNode.next;
+			if(index == position) {
+				break;
+			}
+			targetNode = targetNode.next;
+			position++;
 		}
-
-		return currentNode.element;
+	
+		return targetNode.element;
 	}
 
 	@Override
@@ -136,13 +144,16 @@ public class MyStringLinkedList implements StringLinkedList {
 		}
 
 		if (index == 0) {
+			//
 			removeFirst();
 		} else {
 			//
 			Node previousNode = getNode(index - 1);
 			Node removeNode = getNode(index);
+			
 			previousNode.next = removeNode.next;
 			removeNode = null;
+			
 			length--;
 		}
 
@@ -172,13 +183,13 @@ public class MyStringLinkedList implements StringLinkedList {
 		String[] elements = new String[length];
 		int index = 0;
 		Node node = head;
-		while(node != null){
+		while (node != null) {
 			//
 			elements[index] = node.element;
 			node = node.next;
 			index++;
 		}
-		
+
 		return elements;
 	}
 
@@ -204,6 +215,7 @@ public class MyStringLinkedList implements StringLinkedList {
 		Node node = head;
 		head = node.next;
 		node = null;
+		
 		length--;
 	}
 
@@ -228,7 +240,7 @@ public class MyStringLinkedList implements StringLinkedList {
 	}
 
 	public String toString() {
-		// 
+		//
 		if (head == null) {
 			return "[]";
 		}
