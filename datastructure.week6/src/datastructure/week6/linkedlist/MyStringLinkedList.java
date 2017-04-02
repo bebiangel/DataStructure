@@ -75,6 +75,7 @@ public class MyStringLinkedList implements StringLinkedList {
 		if (index > length || index < 0) {
 			throw new IndexOutOfBoundsException();
 		}
+		
 		if (index == 0) {
 			//
 			addFirst(element);
@@ -82,7 +83,7 @@ public class MyStringLinkedList implements StringLinkedList {
 			//
 			Node newNode = new Node(element);
 			Node currentNode = getNode(index - 1);
-
+			
 			newNode.next = currentNode.next;
 			currentNode.next = newNode;
 
@@ -127,11 +128,6 @@ public class MyStringLinkedList implements StringLinkedList {
 			}
 			currentNode = currentNode.next;
 			index++;
-		}
-		
-		if (index > -1) {
-			remove(index);
-			length--;
 		}
 	}
 
