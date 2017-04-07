@@ -69,16 +69,24 @@ public class StringStack implements MyStringStack {
 		}
 		
 		int position = 0;
+		int index = -1;
+		
 		while (top != null) {
 			//
 			position++;
 			if (top.element.equals(element)) {
+				index = position;
 				break;
 			}
+			
 			top = top.next;
 		}
-
-		return position;
+		
+		if(index > -1) {
+			return position;
+		} 
+		
+		return index;
 	}
 
 	public String toString() {
