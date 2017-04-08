@@ -3,106 +3,92 @@ package datastructure.week7.stack;
 import java.util.NoSuchElementException;
 
 public class StringStack implements MyStringStack {
-	//
-	private Node top;
+    //
+    private Node head;
 
-	public StringStack() {
-		//
-		this.top = null;
-	}
+    public StringStack() {
+        //
+        this.head = null;
+    }
 
-	@Override
-	public boolean empty() {
-		//
-		if (top == null) {
-			return true;
-		}
-		
-		return false;
-	}
+    @Override
+    public boolean empty() {
+        //
+        if (head == null) {
+            return true;
+        }
 
-	@Override
-	public String push(String element) {
-		//
-		Node newNode = new Node(element);
+        return false;
+    }
 
-		if (top == null) {
-			//
-			top = newNode;
-		} else {
-			//
-			newNode.next = top;
-			top = newNode;
-		}
+    @Override
+    public String push(String element) {
+        //
+        Node newNode = new Node(element);
 
-		return newNode.element;
-	}
+        newNode.next = head;
+        head = newNode;
 
-	@Override
-	public String pop() {
-		//
-		if (empty()) {
-			//
-			throw new NoSuchElementException("Stack Underflow");
-		}
-		
-		String element = top.element;
-		top = top.next;
-		return element;
-	}
+        return newNode.element;
+    }
 
-	@Override
-	public String peek() {
-		//
-		if (empty()) {
-			throw new NoSuchElementException("Stack Underflow");
-		}
+    @Override
+    public String pop() {
+        //
+        if (empty()) {
+            throw new NoSuchElementException("Stack Underflow");
+        }
 
-		return top.element;
-	}
+        String element = head.element;
+        head = head.next;
+       
+        return element;
+    }
 
-	@Override
-	public int search(String element) {
-		//
-		if (empty()) {
-			throw new NoSuchElementException("Stack Underflow");
-		}
-		
-		int position = 0;
-		while (top != null) {
-			//
-			position++;
-			if (top.element.equals(element)) {
-				break;
-			}
-			top = top.next;
-		}
+    @Override
+    public String peek() {
+        //
+        if (empty()) {
+            throw new NoSuchElementException("Stack Underflow");
+        }
 
-		return position;
-	}
+        return head.element;
+    }
 
-	public String toString() {
-		//
-		Node node = top;
-		StringBuilder sb = new StringBuilder();
-		while (node != null) {
-			//
-			sb.append(node.element);
-			sb.append(", ");
-			node = node.next;
-		}
-		return sb.toString();
-	}
+    @Override
+    public int search(String element) {
+        //
+        if (empty()) {
+            throw new NoSuchElementException("Stack Underflow");
+        }
 
-	private class Node {
-		//
-		private Node next;
-		private String element;
+        int position = -1;
+        int index = 0;
+        Node targetNode = head;
 
-		public Node(String element) {
-			//
-			this.next = null;
-			this.element = element;
-		}
-	}
+        while (targetNode != null) {
+            //
+            if (targetNode.element.equals(element)) {
+                position = index + 1;
+                break;
+            }
+
+            targetNode = targetNode.next;
+            index++;
+        }
+
+        return position;
+    }
+
+    private class Node {
+        //
+        private Node next;
+        private String element;
+
+        public Node(String element) {
+            //
+            this.next = null;
+            this.element = element;
+        }
+    }
 }
