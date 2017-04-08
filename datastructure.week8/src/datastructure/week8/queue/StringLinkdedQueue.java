@@ -2,52 +2,108 @@ package datastructure.week8.queue;
 
 public class StringLinkdedQueue implements MyStringQueue {
 	//
-	Node head;
-	Node tail;
+	private Node head;
+	private Node tail;
+	private int size;
 
 	public StringLinkdedQueue() {
 		//
 		this.head = null;
 		this.tail = null;
+		this.size = 0;
 	}
 
 	@Override
-	public boolean empty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public String push(String element) {
+	public boolean offer(String element) {
 		//
 		Node newNode = new Node(element);
-		
+
 		newNode.next = head;
 		head = newNode;
-		
-		if(tail == null) {
+
+		size++;
+
+		if (tail == null) {
 			tail = newNode;
 		}
-		
-		return newNode.element;
-	}
 
-	@Override
-	public String pop() {
-		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 	@Override
 	public String peek() {
-		// TODO Auto-generated method stub
-		return null;
+		//
+		if (head == null) {
+			return null;
+		}
+
+		return head.element;
 	}
 
 	@Override
-	public int search(String element) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String poll() {
+		//
+		if (head == null) {
+			return null;
+		}
+
+		String targetElement = tail.element;
+
+		Node node = getNode(size - 1);
+		tail = node;
+		node.next = null;
+
+		size--;
+
+		return targetElement;
+	}
+
+	@Override
+	public int size() {
+		//
+		return size;
+	}
+
+	@Override
+	public boolean empty() {
+		//
+		if (size == 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public String toString() {
+		//
+		Node node = head;
+		StringBuilder sb = new StringBuilder();
+		while (node != null) {
+			//
+			sb.append(node.element);
+			sb.append(", ");
+			node = node.next;
+		}
+
+		return sb.toString();
+	}
+
+	private Node getNode(int targetPosition) {
+		//
+		Node targetNode = head;
+		int position = 1;
+
+		while (true) {
+			//
+			if (position == targetPosition) {
+				break;
+			}
+
+			position++;
+			targetNode = targetNode.next;
+		}
+
+		return targetNode;
 	}
 
 	private class Node {
