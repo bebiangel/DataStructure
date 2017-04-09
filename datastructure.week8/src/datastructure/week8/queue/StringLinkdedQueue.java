@@ -33,7 +33,7 @@ public class StringLinkdedQueue implements MyStringQueue {
 	@Override
 	public String peek() {
 		//
-		if (head == null) {
+		if (empty()) {
 			return null;
 		}
 
@@ -43,15 +43,22 @@ public class StringLinkdedQueue implements MyStringQueue {
 	@Override
 	public String poll() {
 		//
-		if (head == null) {
+		if (empty()) {
 			return null;
 		}
 
-		String targetElement = tail.element;
-
-		Node node = getNode(size - 1);
-		tail = node;
-		node.next = null;
+		String targetElement = "";
+		if (size == 1) {
+			//
+			targetElement = head.element;
+			head = null;
+		} else {
+			//
+			targetElement = tail.element;
+			Node node = getNode(size - 1);
+			tail = node;
+			node.next = null;
+		}
 
 		size--;
 

@@ -2,11 +2,11 @@ package datastructure.week8.queue;
 
 public class StringArrayQueue implements MyStringQueue {
 	//
+	private final int INITIAL_CAPACITY = 5;
 	private String[] elements;
 	private int length;
 	private int front;
 	private int rear;
-	private final int INITIAL_CAPACITY = 5;
 
 	public StringArrayQueue() {
 		//
@@ -19,11 +19,11 @@ public class StringArrayQueue implements MyStringQueue {
 	@Override
 	public boolean offer(String element) {
 		//
-		if (length == INITIAL_CAPACITY) {
-			throw new ArrayIndexOutOfBoundsException("length : " + length + ", INITIAL_CAPACITY : " + INITIAL_CAPACITY);
+		if (length == elements.length) {
+			throw new ArrayIndexOutOfBoundsException("length : " + length + ", elements.length : " + elements.length);
 		}
 
-		if (rear == INITIAL_CAPACITY - 1) {
+		if (rear == elements.length - 1) {
 			rear = -1;
 		}
 
@@ -38,7 +38,7 @@ public class StringArrayQueue implements MyStringQueue {
 	public String peek() {
 		//
 		if (empty()) {
-			throw new ArrayIndexOutOfBoundsException();
+			throw new ArrayIndexOutOfBoundsException("length : " + length);
 		}
 
 		return elements[front];
@@ -47,13 +47,18 @@ public class StringArrayQueue implements MyStringQueue {
 	@Override
 	public String poll() {
 		//
+		if (empty()) {
+			throw new ArrayIndexOutOfBoundsException("length : " + length);
+		}
+		
 		String element = elements[front];
 		elements[front] = null;
 		front++;
-		if (front == INITIAL_CAPACITY - 1) {
+
+		if (front == elements.length) {
 			front = 0;
 		}
-		
+
 		length--;
 
 		return element;
@@ -68,13 +73,17 @@ public class StringArrayQueue implements MyStringQueue {
 	@Override
 	public boolean empty() {
 		//
-		return (front == rear + 1) || (front + INITIAL_CAPACITY - 1 == rear);
+		if ((front == rear + 1)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public String toString() {
 		//
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < INITIAL_CAPACITY; i++) {
+		for (int i = 0; i < elements.length; i++) {
 			sb.append(elements[i]);
 			sb.append(", ");
 		}
