@@ -2,7 +2,7 @@ package datastructure.week8.queue;
 
 public class StringArrayQueue implements MyStringQueue {
 	//
-	private final int INITIAL_CAPACITY = 5;
+	private static final int INITIAL_CAPACITY = 5;
 	private String[] elements;
 	private int length;
 	private int front;
@@ -38,7 +38,7 @@ public class StringArrayQueue implements MyStringQueue {
 	public String peek() {
 		//
 		if (empty()) {
-			throw new ArrayIndexOutOfBoundsException("length : " + length);
+			return null;
 		}
 
 		return elements[front];
@@ -48,9 +48,9 @@ public class StringArrayQueue implements MyStringQueue {
 	public String poll() {
 		//
 		if (empty()) {
-			throw new ArrayIndexOutOfBoundsException("length : " + length);
+			return null;
 		}
-		
+
 		String element = elements[front];
 		elements[front] = null;
 		front++;
