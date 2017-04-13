@@ -13,22 +13,18 @@ public class StringArrayQueue implements MyStringQueue {
 		this.elements = new String[INITIAL_CAPACITY];
 		this.length = 0;
 		this.front = 0;
-		this.rear = -1;
+		this.rear = 0;
 	}
 
 	@Override
 	public boolean offer(String element) {
 		//
-		if (length == elements.length) {
+		if(full()) {
 			throw new ArrayIndexOutOfBoundsException("length : " + length + ", elements.length : " + elements.length);
 		}
 
-		if (rear == elements.length - 1) {
-			rear = -1;
-		}
-
-		rear++;
 		elements[rear] = element;
+		rear = (rear + 1) % elements.length;
 		length++;
 
 		return true;
@@ -47,19 +43,18 @@ public class StringArrayQueue implements MyStringQueue {
 	@Override
 	public String poll() {
 		//
+		String element = "";
+		
 		if (empty()) {
-			return null;
+			element = null;
+		} else { 
+			//
+			element = elements[front];
+			elements[front] = null;
+			front = (front + 1) % elements.length;
+
+			length--;
 		}
-
-		String element = elements[front];
-		elements[front] = null;
-		front++;
-
-		if (front == elements.length) {
-			front = 0;
-		}
-
-		length--;
 
 		return element;
 	}
@@ -73,10 +68,23 @@ public class StringArrayQueue implements MyStringQueue {
 	@Override
 	public boolean empty() {
 		//
-		if ((front == rear + 1)) {
+		if ((length == 0)) {
 			return true;
 		}
 
+		return false;
+	}
+	
+	private boolean full() {
+		//
+		if(length == elements.length) {
+			return true;
+		}
+//		int difference = rear - front;
+//		if(difference == -1 || length == elements.length) {
+//			return true;
+//		}
+		
 		return false;
 	}
 
