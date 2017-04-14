@@ -20,7 +20,7 @@ public class StringArrayQueue implements MyStringQueue {
 	public boolean offer(String element) {
 		//
 		if(full()) {
-			throw new ArrayIndexOutOfBoundsException("length : " + length + ", elements.length : " + elements.length);
+			throw new ArrayIndexOutOfBoundsException("Queue is Full.");
 		}
 
 		elements[rear] = element;
