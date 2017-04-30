@@ -23,6 +23,7 @@ public class Api {
 		linked.poll();
 		System.out.println(linked);
 		linked.poll();
+		System.out.println(linked.poll());
 		System.out.println("empty : " +linked.empty());
 		System.out.println(linked);
 		linked.offer("a");

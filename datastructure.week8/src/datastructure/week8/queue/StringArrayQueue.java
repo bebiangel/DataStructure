@@ -80,11 +80,7 @@ public class StringArrayQueue implements MyStringQueue {
 		if(length == elements.length) {
 			return true;
 		}
-//		int difference = rear - front;
-//		if(difference == -1 || length == elements.length) {
-//			return true;
-//		}
-		
+
 		return false;
 	}
 
