@@ -20,7 +20,7 @@ public class StringHashMap implements MyStringHashMap {
 		Node newNode = new Node(key, value);
 		Node targetNode = null;
 		Node previousNode = null;
-		
+
 		int hash = hash(key);
 
 		if (bucket[hash] == null) {
@@ -30,9 +30,16 @@ public class StringHashMap implements MyStringHashMap {
 			targetNode = bucket[hash];
 
 			while (targetNode != null) {
+				//
+				if (targetNode.getKey().equals(newNode.getKey())) {
+					targetNode.setValue(newNode.getValue());
+					return;
+				}
+				
 				previousNode = targetNode;
 				targetNode = targetNode.next;
 			}
+
 			previousNode.next = newNode;
 			targetNode = newNode;
 		}
@@ -42,18 +49,20 @@ public class StringHashMap implements MyStringHashMap {
 	public String get(String key) {
 		//
 		int hash = hash(key);
-		Node targetNode = null;
-		targetNode = bucket[hash];
+		Node targetNode = bucket[hash];
+		String targetValue = null;
+
 		while (targetNode != null) {
 			//
 			if (key.equals(targetNode.key)) {
+				targetValue = targetNode.getValue();
 				break;
 			}
 
-			targetNode= targetNode.next;
+			targetNode = targetNode.next;
 		}
 
-		return targetNode.value;
+		return targetValue;
 	}
 
 	private int hash(String key) {
@@ -61,6 +70,7 @@ public class StringHashMap implements MyStringHashMap {
 		return key.hashCode() % INITIAL_CAPACITY;
 	}
 
+	@Override
 	public void display() {
 		//
 		for (int i = 0; i < INITIAL_CAPACITY; i++) {
@@ -68,11 +78,12 @@ public class StringHashMap implements MyStringHashMap {
 			if (bucket[i] != null) {
 				Node node = bucket[i];
 				while (node != null) {
-					System.out.println("{" + node.key + ":" + node.value + "}");
+					System.out.print("{" + node.key + ":" + node.value + "} ");
 					node = node.next;
 				}
 			}
 		}
+		System.out.println("");
 
 	}
 
@@ -87,6 +98,19 @@ public class StringHashMap implements MyStringHashMap {
 			this.key = key;
 			this.value = value;
 			this.next = null;
+		}
+
+		public void setValue(String value) {
+			//
+			this.value = value;
+		}
+
+		public String getKey() {
+			return key;
+		}
+
+		public String getValue() {
+			return value;
 		}
 	}
 }

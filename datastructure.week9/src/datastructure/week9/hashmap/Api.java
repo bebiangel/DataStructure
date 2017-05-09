@@ -11,6 +11,7 @@ public class Api {
 		map.put("4", "d");
 		map.put("5", "e");
 		map.put("6", "f");
+		map.put("6", "aa");
 		map.put("7", "g");
 		map.display();
 		
